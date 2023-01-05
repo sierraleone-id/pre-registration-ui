@@ -45,6 +45,8 @@ export class PreviewComponent implements OnInit {
   dataCaptureLanguages = [];
   dataCaptureLanguagesLabels = [];
   dataCaptureLangsDir = [];
+  canDeactivateFlag = false;
+  userPreferredLangCode = [];
   ltrLangs = this.configService
     .getConfigByKey(appConstants.CONFIG_KEYS.mosip_left_to_right_orientation)
     .split(",");
@@ -665,6 +667,12 @@ export class PreviewComponent implements OnInit {
     localStorage.setItem(appConstants.NEW_APPLICANT_FROM_PREVIEW, "true");
     this.router.navigate([`${this.userPrefLanguage}/pre-registration/demographic/new`]);
   }
+
+  navigateDashboard() {
+      this.canDeactivateFlag = false;
+      this.router.navigate([`${this.userPreferredLangCode}/dashboard`]);
+    }
+
   navigateBack() {
     const url = Utils.getURL(this.router.url, "file-upload", 3);
     this.router.navigateByUrl(url + `/${this.preRegId}`);

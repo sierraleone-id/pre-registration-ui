@@ -45,11 +45,12 @@ header {
 }
 
 .preview__header {
-  margin: 0px 2rem 20px 2rem;
-  padding: 20px 0rem;
+  /*margin: 0px 2rem 20px 2rem;*/
+  padding: 0px 1rem;
   border-bottom: 1px solid #ff4081;
   font-weight: bold;
   color: #ff4081;
+  width: 100%;
 }
 /* 
 .preview__header {
