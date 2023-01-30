@@ -26,14 +26,20 @@
 }
 
 .form_wrapper {
-  background:white;
+  /*background: white;*/
   padding:20px 20px;
   padding-bottom:2px;
-  margin-left: 60%;
+  margin-left: 65%;
   margin-top: 10%;
   line-height: 2rem;
   height: auto;
 }
+
+/*.form_wrapper {
+  margin: 8% 0%;
+  line-height: 2rem;
+  height: 64vh;
+}*/
 
 
 .form_fields_padding {

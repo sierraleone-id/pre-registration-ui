@@ -131,14 +131,25 @@ body {
   margin-top: 35px;
   margin-bottom: 30px;
 }
-
+/*
 .wrapper {
-  /*background: rgba(255, 255, 255, 1) !important;*/
-  background-image: url("assets/background.jpg");
+  background-image: url("assets/Gov_SL_Logo_Crest.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   height:80vh;
+} */
+
+.wrapper {
+  /*background: rgba(255, 255, 255, 1) !important;*/
+  background-image: url("assets/Coat_of_arms_of_Sierra_Leone.svg");
+  background-repeat: no-repeat;
+  background-size: 95% 95%;
+  background-color: white;
+  /*opacity: 0.5;*/
+  height:80vh;
+  /*filter: blur(4px);
+  -webkit-filter: blur(4px);*/
 }
 
 :host ::ng-deep .ng2-pdf-viewer-container {
