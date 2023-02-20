@@ -29,10 +29,12 @@
   /*background: white;*/
   padding:20px 20px;
   padding-bottom:2px;
-  margin-left: 65%;
+  margin-left: 60%;
   margin-top: 10%;
   line-height: 2rem;
   height: auto;
+  border-style: groove;
+  /*border-color: black;*/
 }
 
 /*.form_wrapper {

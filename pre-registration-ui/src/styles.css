@@ -144,10 +144,11 @@ body {
   /*background: rgba(255, 255, 255, 1) !important;*/
   background-image: url("assets/Coat_of_arms_of_Sierra_Leone.svg");
   background-repeat: no-repeat;
-  background-size: 95% 95%;
+  background-size: 85% 85%;
   background-color: white;
-  /*opacity: 0.5;*/
+  margin-top: 110px;
   height:80vh;
+  /*opacity: 0.5;*/
   /*filter: blur(4px);
   -webkit-filter: blur(4px);*/
 }
