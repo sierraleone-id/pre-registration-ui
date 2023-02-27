@@ -44,6 +44,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
   langCode;
   textDir = localStorage.getItem("dir");
   name = "";
+  firstName = "";
+  middleName = "";
   applicantContactDetails = [];
   constructor(
     private bookingService: BookingService,
@@ -75,6 +77,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.name = this.configService.getConfigByKey(
       appConstants.CONFIG_KEYS.preregistration_identity_name
     );
+    this.firstName = "firstName";
+    this.middleName = "middleName";
     await this.getUserInfo(this.preRegIds);
     //console.log(this.usersInfoArr);
     for (let i = 0; i < this.usersInfoArr.length; i++) {
@@ -89,7 +93,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
     this.notificationTypes = notificationTypes.map((item) =>
       item.toUpperCase()
     );
-    
+
 
     await this.apiCalls();
     if (this.bookingService.getSendNotification()) {
@@ -116,6 +120,9 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             const nameListObj: NameList = {
               preRegId: "",
               fullName: "",
+              firstName: "",
+              lastName: "",
+              middleName: "",
               regDto: "",
               status: "",
               registrationCenter: "",
@@ -131,10 +138,26 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               let nameValues = demographicData[this.name];
               nameValues.forEach(nameVal => {
                 if (nameVal["language"] == applicationLang) {
-                  nameListObj.fullName = nameVal["value"];
+                  nameListObj.lastName = nameVal["value"];
                 }
-              });  
+              });
             }
+            if (demographicData[this.firstName]) {
+                          let nameValues = demographicData[this.firstName];
+                          nameValues.forEach(nameVal => {
+                            if (nameVal["language"] == applicationLang) {
+                              nameListObj.firstName = nameVal["value"];
+                            }
+                          });
+                        }
+                        if (demographicData[this.middleName]) {
+                                      let nameValues = demographicData[this.middleName];
+                                      nameValues.forEach(nameVal => {
+                                        if (nameVal["language"] == applicationLang) {
+                                          nameListObj.middleName = nameVal["value"];
+                                        }
+                                      });
+                                    }
             if (demographicData["postalCode"]) {
               nameListObj.postalCode = demographicData["postalCode"];
             }
@@ -257,10 +280,10 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       bookingTimePrimary = [];
 
       this.ackDataItem["preRegId"] = prid;
-      
+
       this.ackDataItem["contactPhone"] =
         this.usersInfoArr[0].registrationCenter.contactPhone;
-      
+
       this.usersInfoArr.forEach(userInfo => {
         if (userInfo.preRegId == prid) {
           this.ackDataItem["qrCodeBlob"] = userInfo.qrCodeBlob;
@@ -270,7 +293,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           contactPhoneLabels.push(labels.label_cntr_contact_number);
           labelNames.push(labels.label_name);
           labelRegCntrs.push(labels.label_reg_cntr);
-          nameValues.push(userInfo.fullName);
+          //nameValues.push(userInfo.fullName);
+          nameValues.push(userInfo.firstName + " " + userInfo.middleName + " " + userInfo.lastName);
           //console.log(userInfo.registrationCenter.name);
           if (userInfo.registrationCenter.name) {
             regCntrNames.push(userInfo.registrationCenter.name);
@@ -289,7 +313,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               langCode: userInfo.langCode,
               date:userInfo.bookingDataPrimary,
               langAvailable: true
-            });  
+            });
             let fltr = messages.filter(msg => msg.preRegId == fltrLangs[0].preRegId);
             if (fltr.length == 0) {
               messages.push({
@@ -308,13 +332,13 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
               langCode: userInfo.langCode,
               date:userInfo.bookingDataPrimary,
               langAvailable: false
-            });  
+            });
             let fltr = messages.filter(msg => msg.preRegId == userInfo.preRegId);
             if (fltr.length == 0) {
               messages.push({
                 "preRegId": userInfo.preRegId,
                 "message": userInfo.userLangLabelDetails[0].message
-              });  
+              });
             }
           }
         }
@@ -378,7 +402,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.ackDataArr.push(this.ackDataItem);
       this.ackDataItem = {};
     });
-    
+
   }
 
   async apiCalls() {
@@ -386,7 +410,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
       this.formatDateTime();
       await this.qrCodeForUser();
       await this.getTemplate();
-     
+
       resolve(true);
     });
   }
@@ -427,8 +451,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
           ltrLangs
         );
         userInfo.bookingTimePrimary = Utils.formatTime(date[1]);
-      }    
-    });  
+      }
+    });
   }
 
   automaticNotification() {
@@ -461,7 +485,7 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
         jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
-      
+
       const element = document.getElementById("pdf-section" + "-" + preRegId);
       window.scroll(0, 0);
       html2pdf(element, this.pdfOptions);
@@ -555,7 +579,8 @@ export class AcknowledgementComponent implements OnInit, OnDestroy {
             }
           });
           notificationObject[user.langCode] = new NotificationDtoModel(
-            user.fullName,
+            //user.fullName,
+            user.lastName,
             user.preRegId,
             user.bookingData
               ? user.bookingData.split(",")[0]
